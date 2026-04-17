@@ -26,6 +26,29 @@ body {
 }
 
 /* Panel arcade: rejilla + leve viñeta CRT */
+/* Parpadeo tipo “PRESS START” / recreativa (mitad ciclo visible, mitad apagado) */
+@keyframes arcade-blink {
+  0%,
+  49.9% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.arcade-blink {
+  animation: arcade-blink 1.15s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arcade-blink {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 .leaderboard-crt {
   background-image:
     linear-gradient(rgba(18, 10, 40, 0.92), rgba(18, 10, 40, 0.92)),
