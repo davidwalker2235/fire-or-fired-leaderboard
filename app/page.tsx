@@ -49,6 +49,15 @@ export default async function Home() {
           priority
           sizes="50vw"
         />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center px-3 pb-4 pt-8">
+          <Image
+            src="/erni_academy_logo.PNG"
+            alt="ERNI Academy"
+            width={320}
+            height={72}
+            className="h-auto w-full max-w-[min(92%,20rem)] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+          />
+        </div>
       </section>
 
       <section
