@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
 import { LeaderboardLive } from "@/app/leaderboard-live";
+import { LeftPanel } from "@/app/left-panel";
 import {
   LEADERBOARD_URL,
   type LeaderboardEntry,
@@ -35,25 +35,7 @@ export default async function Home() {
 
   return (
     <div className="flex h-dvh min-h-0 w-full flex-row">
-      <section className="relative h-full w-1/2 min-w-0 shrink-0 bg-[#0c0c0c]">
-        <Image
-          src="/cover.jpeg"
-          alt="Fire or Fired — portada"
-          fill
-          className="object-contain object-center"
-          priority
-          sizes="50vw"
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center px-3 pb-4 pt-8">
-          <Image
-            src="/erni_academy_logo.PNG"
-            alt="ERNI Academy"
-            width={320}
-            height={72}
-            className="h-auto w-full max-w-[min(92%,20rem)] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
-          />
-        </div>
-      </section>
+      <LeftPanel />
 
       <section
         className={`leaderboard-crt flex h-full w-1/2 min-w-0 shrink-0 flex-col overflow-y-auto border-l-4 border-[#ff9f1c] bg-[#0f0520] px-4 py-6 sm:px-7 sm:py-9 ${pixelFont.className}`}
