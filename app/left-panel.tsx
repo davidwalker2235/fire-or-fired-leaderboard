@@ -24,6 +24,51 @@ type Phase =
   | "cover_before_4"
   | "playing_4";
 
+function ArcadeVideo({
+  src,
+  onEnded,
+}: {
+  src: string;
+  onEnded: () => void;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    el.defaultMuted = true;
+    el.muted = true;
+
+    const tryPlay = () => {
+      const p = el.play();
+      if (p !== undefined) {
+        void p.catch(() => {
+          /* Autoplay bloqueado en algunos navegadores; el usuario puede interactuar */
+        });
+      }
+    };
+
+    tryPlay();
+
+    el.addEventListener("canplay", tryPlay);
+    return () => el.removeEventListener("canplay", tryPlay);
+  }, [src]);
+
+  return (
+    <video
+      ref={ref}
+      className="absolute inset-0 z-[10] h-full w-full bg-[#0c0c0c] object-contain"
+      src={src}
+      muted
+      playsInline
+      preload="auto"
+      controls={false}
+      onEnded={onEnded}
+    />
+  );
+}
+
 export function LeftPanel() {
   const [phase, setPhase] = useState<Phase>("cover_before_1");
   const waitTimerRef = useRef<number | null>(null);
@@ -85,8 +130,9 @@ export function LeftPanel() {
 
   return (
     <section className="relative h-full w-1/2 min-w-0 shrink-0 bg-[#0c0c0c]">
+      {/* `hidden` evita que la portada siga encima del vídeo por capas/stacking de next/image */}
       <div
-        className={`absolute inset-0 transition-opacity duration-200 ${playing ? "opacity-0" : "opacity-100"}`}
+        className={`absolute inset-0 z-[1] ${playing ? "hidden" : ""}`}
         aria-hidden={playing}
       >
         <Image
@@ -100,19 +146,10 @@ export function LeftPanel() {
       </div>
 
       {playing && videoSrc !== null && (
-        <video
-          key={videoSrc}
-          className="absolute inset-0 z-10 h-full w-full bg-[#0c0c0c] object-contain"
-          src={videoSrc}
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onEnded={handleVideoEnded}
-        />
+        <ArcadeVideo key={videoSrc} src={videoSrc} onEnded={handleVideoEnded} />
       )}
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-4 pt-8">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[20] flex justify-center px-3 pb-4 pt-8">
         <Image
           src="/erni_academy_logo.PNG"
           alt="ERNI Academy"
